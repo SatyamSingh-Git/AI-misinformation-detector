@@ -1,0 +1,21 @@
+{
+  "recommendations": [
+    // Python Essentials
+    "ms-python.python", // The official Python extension (IntelliSense, debugging)
+    "ms-python.vscode-pylance", // Fast static type checking and smart code completion
+    "ms-toolsai.jupyter", // For running Jupyter notebooks
+    "njpwerner.autodocstring", // Quickly generate Python docstrings
+
+    // JavaScript/React Essentials
+    "dbaeumer.vscode-eslint", // Integrates ESLint into VS Code for error checking
+    "esbenp.prettier-vscode", // The essential code formatter for JS/React
+    "burkeholland.simple-react-snippets", // Shortcuts for creating React components
+
+    // General Development & Collaboration
+    "ms-azuretools.vscode-docker", // Manage Docker containers and images
+    "humao.rest-client", // Test your backend API endpoints directly in VS Code
+    "eamodio.gitlens", // Supercharges the Git capabilities of VS Code
+    "ms-vsliveshare.vsliveshare", // Real-time collaborative development
+    "streetsidesoftware.code-spell-checker" // Catches common spelling errors
+  ]
+}

@@ -1,0 +1,73 @@
+.App {
+  padding: 2rem;
+  width: 100%;
+}
+
+.App-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.App-header h1 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* --- The Core Two-Column Layout --- */
+.App-main-grid {
+  display: flex;
+  flex-direction: row; /* Arrange children side-by-side */
+  align-items: flex-start; /* Align columns to the top */
+  gap: 2rem; /* Creates space between the columns */
+  width: 100%;
+  max-width: 1600px; /* Set a max width for very large screens */
+  margin: 0 auto;
+}
+
+.input-column {
+  flex: 1 1 50%; /* Grow/Shrink, with an ideal basis of 50% */
+  display: flex;
+  flex-direction: column;
+  /* We remove justify-content so the card can fill the space */
+}
+
+.results-column {
+  flex: 1 1 50%; /* Grow/Shrink, with an ideal basis of 50% */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* --- Responsive Design for Smaller Screens --- */
+/* This media query applies ONLY when the screen width is 992px or less */
+@media (max-width: 992px) {
+  .App-main-grid {
+    flex-direction: column; /* Stack the columns vertically */
+    align-items: center; /* Center the columns in the stack */
+  }
+
+  .input-column,
+  .results-column {
+    width: 100%;
+    max-width: 700px; /* Give the cards a max width on smaller screens */
+  }
+}
+
+.error-message {
+  width: 100%;
+  max-width: 700px;
+  padding: 1rem;
+  background-color: #e74c3c;
+  color: white;
+  border-radius: 8px;
+  font-weight: 500;
+  text-align: center;
+}

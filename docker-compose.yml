@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  # The Backend FastAPI Service
+  backend:
+    build: ./backend # Specifies that the image should be built from the Dockerfile in the 'backend' directory
+    container_name: misinformation_backend
+    ports:
+      - "8000:8000" # Maps port 8000 on your local machine to port 8000 inside the container
+    volumes:
+      - ./backend:/code # Mounts the local 'backend' directory into the '/code' directory in the container for live code reloading
+    environment:
+      # These environment variables are passed to the backend application
+      - DATABASE_URL=postgresql://user:password@db:5432/misinfodb
+    depends_on:
+      - db # Ensures that the 'db' service is started before the 'backend' service
+
+  # The PostgreSQL Database Service
+  db:
+    image: postgres:14-alpine # Uses an official, lightweight PostgreSQL image
+    container_name: misinformation_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/ # Persists database data on your local machine even if the container is removed
+    ports:
+      - "5432:5432" # Maps the PostgreSQL port for optional direct access from your machine
+    environment:
+      # These environment variables configure the new PostgreSQL instance
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=misinfodb
+
+# Defines a named volume for persisting database data
+volumes:
+  postgres_data:
