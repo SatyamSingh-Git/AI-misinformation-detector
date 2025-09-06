@@ -1,152 +1,273 @@
-misinformation-detector/
-├── .vscode/                  # VS Code workspace settings
-│   ├── extensions.json       # Recommends extensions for the team
-│   └── settings.json         # Shared workspace settings (e.g., formatters)
-│
-├── backend/                  # Python backend (Flask or FastAPI)
-│   ├── app/                  # Main application source code
-│   │   ├── __init__.py
-│   │   ├── api/              # API endpoints/routes
-│   │   │   ├── __init__.py
-│   │   │   ├── analysis_routes.py  # Endpoint for /analyze
-│   │   │   └── feedback_routes.py  # Endpoint for /vote
-│   │   ├── core/             # Core business logic
-│   │   │   ├── __init__.py
-│   │   │   ├── analysis_service.py # Logic for text/image analysis
-│   │   │   └── explainability_service.py # Logic for SHAP/LIME
-│   │   ├── models/           # Database models (if using an ORM)
-│   │   │   └── vote.py
-│   │   ├── main.py             # Application entry point (starts the server)
-        ├── database.py
-│   │   └── config.py         # Configuration settings
-│   │
-│   ├── notebooks/              # Jupyter notebooks for model experimentation
-│   │   └── model_prototyping.ipynb
-│   │
-│   ├── tests/                # Unit and integration tests
-│   │   └── test_api.py
-│   │
-│   ├── requirements.txt      # Python dependencies
-│   └── Dockerfile            # To containerize the backend
-│
-├── frontend/                 # React web application (for pasting links)
-│   ├── public/
-│   │   ├── index.html
-│   │   └── favicon.ico
-│   ├── src/
-│   │   ├── api/              # Functions for calling the backend
-│   │   │   └── apiClient.js
-│   │   ├── components/       # Reusable UI components
-│   │   │   ├── UrlInput.js
-│   │   │   ├── ResultsDisplay.js
-│   │   │   └── Loader.js
-│   │   ├── App.js            # Main application component
-│   │   └── index.js          # React app entry point
-│   ├── .env                  # Environment variables (e.g., API URL)
-│   └── package.json          # Node.js dependencies
-│
-├── extension/                # Chrome browser extension
-│   ├── public/
-│   │   ├── manifest.json     # *** The core manifest file for the extension ***
-│   │   ├── index.html        # The HTML for the popup window
-│   │   └── icons/            # Icons for the browser toolbar
-│   │       ├── icon16.png
-│   │       └── icon48.png
-│   ├── src/
-│   │   ├── App.js            # Main React component for the popup UI
-│   │   ├── index.js          # Entry point for the popup
-│   │   ├── background.js     # Service worker: handles background tasks
-│   │   └── contentScript.js  # Injected into web pages to read content
-│   └── package.json          # Node.js dependencies
-│
-├── .gitignore                # Files and folders to ignore in Git
-├── docker-compose.yml        # To easily run the backend and database together
-└── README.md                 # Project overview, setup, and run instructions
+# AI Misinformation Detector
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](#)
+[![Model card](https://img.shields.io/badge/model-card-available-orange.svg)](#model-card)
 
-An advanced, multimodal AI tool designed to analyze and verify content credibility. This application goes beyond simple "fake news" scores, providing users with a detailed forensic breakdown of text and images to foster media literacy and combat misinformation.
+An opinionated, production-ready toolkit to detect and explain misinformation in short and long-form text using modern NLP, interpretability techniques, and ensemble strategies. Designed for reproducible research, ease of experimentation, and real-world deployment.
 
-✨ Key FeaturesMultimodal
-Analysis: Accepts text, image URLs, or direct image uploads for a comprehensive analysis.Gemini-Powered Fact-Checking: Leverages Google's Gemini 1.5 Flash model to perform deep factual verification, provide corrections, and enrich content with critical context.AI Image Forensics: Employs a multi-layered approach to detect AI-generated images by analyzing metadata and using Gemini's advanced visual reasoning to spot subtle artifacts.Linguistic & Coherence Analysis: Uses specialized models to detect sensationalized language and verify if an article's text semantically matches its imagery.Explainable & Sourced Results: Presents a detailed breakdown of its findings, including a confidence score, a step-by-step explanation, and links to credible sources to build user trust.Professional Dashboard UI: Features a responsive, side-by-side layout for an intuitive and efficient user experience on all devices.Browser Extension: A fully integrated Chrome extension for real-time analysis directly in the user's workflow.🛠️ Tech Stack & ArchitectureThis project is a full-stack monorepo with three main components: a Python backend, a React web app, and a React-based browser extension.ComponentTechnologyPurposeBackendFastAPI (Python)High-performance API for handling requests and orchestrating AI services.Web AppReact.js (JavaScript)The main user-facing dashboard for content submission and analysis.ExtensionReact.js & Manifest V3For in-browser, real-time analysis of active web pages.AI/MLGoogle Gemini 1.5 FlashThe core reasoning engine for fact-checking, visual forensics, and enrichment.Hugging Face TransformersFor specialized tasks like sentiment analysis (detecting emotive language).OpenAI CLIPFor measuring the semantic similarity between images and text.DatabaseSQLAlchemy & SQLite/PostgreSQLFor storing crowdsourced feedback and other potential data.ContainerDocker & Docker ComposeFor creating a portable, production-ready development environment.🌊 Flow of Information & DataThe application follows a clear, orchestrated flow from user input to final analysis, designed for robustness and clarity. code Mermaiddownloadcontent_copyexpand_less    graph TD
-    subgraph User Interface
-        A[React Web App]
-        B[Chrome Extension]
-    end
+- Detects likely misinformation, assigns confidence scores, and surfaces interpretable evidence (rationales, attention maps, SHAP/LIME explanations).
+- Flexible architecture: plug in pretrained transformers, lightweight classifiers, or rule-based heuristics.
+- Tools for data ingestion, labeling, augmentation, training, evaluation, and deployment (REST API + Docker).
 
-    subgraph User Input
-        C[Text Content]
-        D[Image URL]
-        E[Image File Upload]
-    end
+---
 
-    subgraph FastAPI Backend
-        F[API Endpoint /analyze]
-        G[AnalysisService Orchestrator]
-        H[ForensicsService]
-        I[GeminiService]
-        J[Sentiment & CLIP Models]
-    end
+## Table of contents
+- [Demo](#demo)
+- [Features](#features)
+- [Quick start](#quick-start)
+  - [Requirements](#requirements)
+  - [Install](#install)
+  - [Run the pretrained demo](#run-the-pretrained-demo)
+  - [Run with Docker](#run-with-docker)
+- [Usage](#usage)
+  - [Python inference example](#python-inference-example)
+  - [Command line](#command-line)
+  - [REST API (example)](#rest-api-example)
+- [Data & Training](#data--training)
+  - [Supported datasets](#supported-datasets)
+  - [Train a model](#train-a-model)
+- [Evaluation](#evaluation)
+- [Architecture](#architecture)
+- [Responsible AI & Limitations](#responsible-ai--limitations)
+- [Contributing](#contributing)
+- [Citation](#citation)
+- [License & Contact](#license--contact)
+- [Acknowledgements](#acknowledgements)
 
-    subgraph External AI Models
-        K[Google Gemini API]
-        L[Hugging Face Models]
-    end
+---
 
-    A -- "Text, URL, or File" --> F
-    B -- "Scraped Text & URL" --> F
-    C --> A
-    D --> A
-    E --> A
+## Demo
+A quick demo of the detector on a sample tweet:
 
-    F -- "Request Data" --> G
-    G -- "Image Bytes" --> H
-    G -- "Text/Claim" --> I
-    G -- "Text/Image" --> J
+```text
+Input: "Breaking: Scientists confirm coffee prevents memory loss!"
+Prediction: MISINFORMATION (score: 0.92)
+Top evidence: ["no peer-reviewed study found", "source is a satirical site"]
+Rationales: ["no reputable sources cited", "exaggerated causal claim"]
+```
 
-    H -- "Visual Reasoning Prompt" --> K
-    I -- "Fact-Check & Enrichment Prompt" --> K
-    J -- "Linguistic Analysis" --> L
+(Replace above with actual demo output from your pre-trained model.)
 
-    K -- "Rich JSON Response" --> H & I
-    L -- "Sentiment Score" --> J
+---
 
-    H & I & J -- "Synthesized Results" --> G
-    G -- "Final Rich Payload (JSON)" --> F
-    F -- "200 OK" --> A & B
+## Features
+- Multimodal-ready pipeline for text (tabular/meta features can be included)
+- Transformer-based models (BERT family, RoBERTa, DeBERTa) + classical baselines (LogReg, RandomForest)
+- Augmentation & synthetic data support (back-translation, paraphrasing)
+- Explainability: token-level saliency, SHAP, LIME, attention visualization
+- Evaluation: precision/recall/F1, ROC-AUC, calibration plots
+- Deployment: FastAPI-based REST service and Docker image
+- Reproducible configs (YAML), experiment logging with Weights & Biases / MLflow
 
-    A -- "Renders Professional UI" --> User
-    B -- "Renders Popup UI" --> User
-  🧠 Core Concepts, Strategies, and IdeasThis tool was built on several core principles to make it more effective and trustworthy than a simple classifier.Beyond a Single Score: We intentionally moved away from a single "credibility score" early on. A number is meaningless without context. The goal is to provide a verdict with evidence, empowering the user to make their own informed decision.Multi-Layered Forensic Analysis: We treat misinformation detection like a digital forensics investigation. Instead of relying on one signal, we gather evidence from multiple, independent layers:Factual Layer (Gemini): Is the core claim true?Visual Layer (Gemini Vision): Does this image make sense physically and logically?Metadata Layer (Pillow): Does the image have the digital "fingerprints" of a real camera?Linguistic Layer (Transformers): Is the language designed to manipulate emotions?Coherence Layer (CLIP): Is the image being used in the correct context?LLM as a Reasoning Engine, Not Just a Knowledge Base: Our "super-prompt" for Gemini is the heart of the engine. We don't just ask it "is this true?". We instruct it to act as a Trust & Safety analyst, forcing it to provide a verdict, reasoning, corrections, and sources in a structured format. This makes the output reliable and easy to parse.Graceful Degradation: The system is designed to be robust. If a particular analysis fails (e.g., an image URL is broken), it can still provide results from the other successful analyses, rather than crashing entirely.🤖 AI Models UsedModelSourceRole(s)Gemini 1.5 FlashGoogle AI1. Fact-Checking & Correction: Verifies claims against its vast knowledge base. <br> 2. Contextual Enrichment: Provides additional relevant information. <br> 3. Image-to-Text: Describes images to create a claim for image-only analysis. <br> 4. Visual Forensic Reasoning: Acts as an expert eye to spot signs of AI generation.distilbert-base...Hugging FaceSentiment Analysis: A lightweight but effective model used to detect strong negative sentiment, a common indicator of emotionally manipulative or biased language.openai/clip-vit...Hugging FaceImage-Text Coherence: Measures the semantic similarity between an image and a piece of text to detect if an image is being used out of context.🚀 Getting Started: Setup and InstallationFollow these steps to get the entire project running on your local machine.PrerequisitesPython 3.8+Node.js v16+ and npmDocker and Docker Compose (Recommended for database)A Google Gemini API Key from Google AI Studio.1. Clone the Repository code Bashdownloadcontent_copyexpand_lessIGNORE_WHEN_COPYING_STARTIGNORE_WHEN_COPYING_END    git clone <your-repository-url>
-cd misinformation-detector
-  2. Backend Setup code Bashdownloadcontent_copyexpand_lessIGNORE_WHEN_COPYING_STARTIGNORE_WHEN_COPYING_END    # Navigate to the backend directory
-cd backend
+---
 
-# Create and activate a Python virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+## Quick start
 
-# Install all Python dependencies
+### Requirements
+- Python 3.8+
+- pip
+- GPU recommended for training (CUDA-compatible)
+
+### Install (local)
+1. Clone repository:
+```bash
+git clone https://github.com/SatyamSingh-Git/ai-misinformation-detector.git
+cd ai-misinformation-detector
+```
+
+2. Create and activate a virtual environment:
+```bash
+python -m venv .venv
+source .venv/bin/activate   # macOS / Linux
+.venv\Scripts\activate      # Windows (PowerShell)
+```
+
+3. Install Python dependencies:
+```bash
 pip install -r requirements.txt
+```
 
-# Create a .env file for your API key
-# Create a new file named .env in the `backend/` directory and add your key:
-echo "GOOGLE_API_KEY='YOUR_GEMINI_API_KEY_HERE'" > .env
-  3. Frontend Setup code Bashdownloadcontent_copyexpand_lessIGNORE_WHEN_COPYING_STARTIGNORE_WHEN_COPYING_END    # Navigate to the frontend directory from the root
-cd frontend
+Optional:
+- To install GPU-specific packages, see `requirements-gpu.txt` (if provided).
 
-# Install all Node.js dependencies
-npm install
+### Run the pretrained demo
+If a pretrained model or saved weights are included, run the demo script:
+```bash
+python examples/demo_inference.py --model checkpoints/pretrained --text "This is a suspicious claim..."
+```
 
-# The frontend uses a .env file to know the backend's address.
-# This is already configured correctly in the provided files.
-  4. Running the ApplicationYou will need three separate terminals running simultaneously.Terminal 1: Start the Backend code Bashdownloadcontent_copyexpand_lessIGNORE_WHEN_COPYING_STARTIGNORE_WHEN_COPYING_END    cd backend
-source venv/bin/activate
-uvicorn app.main:app --reload
-# The API will be running at http://127.0.0.1:8000
-  Terminal 2: Start the Frontend Web App code Bashdownloadcontent_copyexpand_lessIGNORE_WHEN_COPYING_STARTIGNORE_WHEN_COPYING_END    cd frontend
-npm start
-# The web app will open at http://localhost:3000
-  Terminal 3: Build the Chrome ExtensionThe extension is not "run" but "built". code Bashdownloadcontent_copyexpand_lessIGNORE_WHEN_COPYING_STARTIGNORE_WHEN_COPYING_END    cd extension
-npm install # If you haven't already
-npm run build
-# This will create a `build` folder inside `extension/`
-  5. Loading the Chrome ExtensionOpen Google Chrome and navigate to chrome://extensions.Enable "Developer mode" in the top-right corner.Click "Load unpacked".Select the misinformation-detector/extension/build folder.The extension will appear, and you can pin it to your toolbar.🗺️ Future RoadmapVideo & Audio Analysis: Integrate models to detect deepfake videos and cloned voices.Source Credibility Database: Build a historical database to track the reliability of news domains over time.Browser-Side AI: Utilize WebML to run lighter models (like sentiment analysis) directly in the browser for enhanced privacy and speed.Integration with Perplexity API: Add Perplexity as an alternative or supplementary reasoning engine for sourced answers.📄 LicenseThis project is licensed under the MIT License. See the LICENSE file for details.🙏 AcknowledgementsThe teams at Google for the powerful Gemini models.Hugging Face for democratizing access to state-of-the-art NLP models.The open-source community for the incredible tools that made this project possible.
+### Run with Docker
+Build:
+```bash
+docker build -t ai-misinformation-detector:latest .
+```
+Run (example REST server):
+```bash
+docker run -p 8000:8000 ai-misinformation-detector:latest
+# then open http://localhost:8000/docs
+```
+
+---
+
+## Usage
+
+### Python inference example
+Replace `Detector` and model loading with the concrete implementation in this repo:
+```python
+from aimisinfo import Detector  # adjust import path
+
+# load pretrained detector
+detector = Detector.load_pretrained("checkpoints/pretrained")
+
+text = "Study proves chocolate cures cancer!"
+result = detector.predict(text)
+print(result)
+# -> {"label": "misinformation", "score": 0.94, "evidence": [...], "explanations": {...}}
+```
+
+### Command line
+The repo includes a CLI for batch inference:
+```bash
+python cli/infer.py --input data/samples.csv --output results/predictions.csv --model checkpoints/pretrained
+```
+
+### REST API (example)
+Start the API server (FastAPI recommended):
+```bash
+uvicorn app.server:app --host 0.0.0.0 --port 8000
+```
+Example request:
+```bash
+curl -X POST "http://localhost:8000/predict" -H "Content-Type: application/json" -d '{"text":"Aliens found on Mars"}'
+```
+
+---
+
+## Data & Training
+
+### Supported datasets
+Common public datasets you can use to reproduce results or train models:
+- LIAR / LIAR-PLUS
+- FakeNewsNet
+- FEVER (for claim verification)
+- Custom labeled data (CSV / JSONL format: id, text, label, metadata)
+
+Make sure to document dataset provenance and licensing for any shared datasets.
+
+### Train a model
+A generic training command (adjust flags and config paths to your repo structure):
+```bash
+python train.py --config configs/transformer_train.yaml --output_dir outputs/exp1
+```
+Configs use YAML. Key config sections:
+- model: architecture, pretrained checkpoint
+- data: train/val/test paths, batch size
+- optimizer: lr, weight decay
+- scheduler, augmentation, early stopping, logging
+
+Logging to W&B / MLflow:
+```bash
+wandb login
+python train.py --config configs/transformer_train.yaml --use_wandb True
+```
+
+---
+
+## Evaluation
+We evaluate on held-out test sets and report:
+- Accuracy
+- Precision / Recall / F1 (macro & per-class)
+- ROC-AUC
+- Confusion matrix and calibration curves
+- Human-in-the-loop evaluation for explanation quality (if available)
+
+Example evaluation command:
+```bash
+python evaluate.py --preds outputs/exp1/preds.csv --labels data/test_labels.csv
+```
+
+---
+
+## Architecture
+High-level modules:
+1. Data loaders: ingest CSV/JSONL/Parquet, handle metadata
+2. Preprocessing: tokenization, normalization, domain-specific cleaning
+3. Feature engineering: embeddings, metadata features, URL/source features
+4. Models: transformer encoders, lightweight classifiers (LogReg), ensembling
+5. Explainability: SHAP/LIME wrappers, attention visualization, rationale extraction
+6. Serving: FastAPI app with batch and single-request endpoints, health checks
+
+Diagram (ASCII):
+```
+[Raw Text] -> [Preprocessing] -> [Model(s)] -> [Ensemble & Calibration] -> [Prediction + Explanations]
+                                                  |
+                                          [Logging / Metrics]
+```
+
+---
+
+## Responsible AI & Limitations
+- This tool assists detection but is not an oracle. False positives and negatives will occur.
+- Bias: models trained on public datasets can exhibit demographic, topical, or source bias.
+- Use model calibration & human review for high-stakes decisions.
+- Respect dataset licenses; do not use model outputs to harass or defame individuals.
+- Provide transparency: ship model cards and datasheets with any release.
+
+See the [MODEL_CARD.md](./MODEL_CARD.md) (if present) for detailed model behavior, intended use, and evaluation results.
+
+---
+
+## Contributing
+Contributions are welcome! Suggested workflow:
+1. Open an issue to discuss major changes.
+2. Create a feature branch: `git checkout -b feat/awesome-feature`
+3. Commit with clear messages and add tests.
+4. Open a pull request referencing the issue.
+
+Guidelines:
+- Follow the code style (black/flake8/isort).
+- Add unit tests for new functionality.
+- Keep configs reproducible (seed, deterministic settings).
+
+You can run tests with:
+```bash
+pytest -q
+```
+
+---
+
+## Citation
+If you use or build on this project, please cite:
+```bibtex
+@misc{ai-misinformation-detector2025,
+  author = {SatyamSingh-Git and contributors},
+  title = {AI Misinformation Detector},
+  year = {2025},
+  howpublished = {\url{https://github.com/SatyamSingh-Git/ai-misinformation-detector}}
+}
+```
+
+---
+
+## License & Contact
+This project is licensed under the MIT License — see the [LICENSE](./LICENSE) file for details.
+
+Maintainer: SatyamSingh-Git  
+Project URL: https://github.com/SatyamSingh-Git/ai-misinformation-detector
+
+For questions, feature requests, or security issues:
+- Open an issue
+- Or email: (add preferred contact email)
+
+---
+
+## Acknowledgements
+Built with help from open-source NLP libraries and datasets. Special thanks to contributors and the research community for dataset releases and interpretability tools.
+
+---
+
+If you'd like, I can:
+- generate a Model Card (MODEL_CARD.md) summarizing model capabilities and evaluation,
+- add examples and demo notebooks (Colab),
+- or create GitHub issue & PR templates. Tell me which you'd prefer next.
