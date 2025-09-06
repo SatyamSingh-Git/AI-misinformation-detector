@@ -2,7 +2,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](#)
-[![Model card](https://img.shields.io/badge/model-card-available-orange.svg)](#model-card)
 
 An opinionated, production-ready toolkit to detect and explain misinformation in short and long-form text using modern NLP, interpretability techniques, and ensemble strategies. Designed for reproducible research, ease of experimentation, and real-world deployment.
 
@@ -265,9 +264,4 @@ For questions, feature requests, or security issues:
 ## Acknowledgements
 Built with help from open-source NLP libraries and datasets. Special thanks to contributors and the research community for dataset releases and interpretability tools.
 
----
 
-If you'd like, I can:
-- generate a Model Card (MODEL_CARD.md) summarizing model capabilities and evaluation,
-- add examples and demo notebooks (Colab),
-- or create GitHub issue & PR templates. Tell me which you'd prefer next.
