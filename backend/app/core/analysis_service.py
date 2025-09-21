@@ -20,7 +20,7 @@ print("Loading text analysis pipeline...")
 # Using a sentiment model as a proxy for detecting sensationalized/emotive language.
 text_analyzer = pipeline(
     "sentiment-analysis",
-    model="distilbert-base-uncased-finetuned-sst-2-english"
+    model="/app/models/sentiment-model"
 )
 print("Text analysis pipeline loaded.")
 

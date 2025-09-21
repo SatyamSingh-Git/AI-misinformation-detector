@@ -1,6 +1,6 @@
 // The base URL for your backend API.
 // IMPORTANT: Update this if your backend is deployed elsewhere.
-const API_BASE_URL = 'http://127.0.0.1:8000';
+const API_BASE_URL = 'REPLACE_WITH_YOUR_BACKEND_URL';
 
 /**
  * Fetches analysis from the backend API.
