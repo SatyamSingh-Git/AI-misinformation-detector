@@ -4,17 +4,10 @@ from sqlalchemy.orm import sessionmaker
 from .config import get_settings
 # --- Database Configuration ---
 
-# For a hackathon, SQLite is the easiest to set up.
-# The database will be a single file named 'misinformation.db' in the backend's root directory.
-SQLALCHEMY_DATABASE_URL = "sqlite:///./misinformation.db"
-
-# If you were deploying to production, you would use PostgreSQL like this:
-# SQLALCHEMY_DATABASE_URL = "postgresql://user:password@postgresserver/db"
-
 # --- SQLAlchemy Engine Setup ---
 settings = get_settings()
 # The engine is the central point of contact for the application to the database.
-# The 'connect_args' are only needed for SQLite to allow multithreaded access.
+# It reads the DATABASE_URL from the environment variables.
 engine = create_engine(settings.DATABASE_URL)
 
 # --- Session Management ---

@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://misinformation-backend-989475181711.us-central1.run.app';
 
 export const analyzeContent = async (content) => {
   const { text, imageUrl, imageFile, imageSourceContext } = content;

@@ -22,13 +22,17 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Download the model during the build process
+COPY download_model.py .
+RUN python download_model.py
+
 # Copy the application code (the 'app' directory) into the container
 COPY ./app ./app
 
 # Expose the port that the Uvicorn server will run on
-EXPOSE 8000
+EXPOSE 8080
 
 # The command to run the application when the container starts.
 # We use 0.0.0.0 to make the server accessible from outside the container.
 # The --host and --port flags are for production, not development.
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
