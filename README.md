@@ -36,6 +36,11 @@ A revolutionary, production-ready multimodal AI system that treats misinformatio
 
 ## Demo
 Here is a sample output for a suspicious news article with a misleading image:
+![demo-placeholder](demo-placeholder1.png)
+
+![demo-placeholder](demo-placeholder2.png)
+
+![demo-placeholder](demo-placeholder3.png)
 
 ```json
 {
