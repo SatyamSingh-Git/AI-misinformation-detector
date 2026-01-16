@@ -1,0 +1,120 @@
+/* In frontend/src/components/ResultsDisplay.css */
+
+.results-container {
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  /* The margin-top is no longer needed in the grid layout */
+  overflow: hidden; /* Important for border-radius */
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* --- 1. Verdict Header --- */
+.verdict-header {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  color: white;
+}
+.verdict-header.verdict-false { background-color: #e74c3c; } /* Red */
+.verdict-header.verdict-misleading { background-color: #f39c12; } /* Yellow */
+.verdict-header.verdict-true { background-color: #27ae60; } /* Green */
+.verdict-header.verdict-neutral { background-color: #7f8c8d; } /* Grey */
+
+.verdict-icon {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-right: 1rem;
+}
+.verdict-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.results-body {
+  padding: 1.5rem;
+}
+
+/* --- 2. Finding Card --- */
+.finding-card {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+.finding-card h3 {
+  margin-top: 0;
+  color: #343a40;
+}
+.finding-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #495057;
+  margin-bottom: 0;
+}
+
+/* --- 3. Evidence Section --- */
+.evidence-section h3 {
+  border-bottom: 2px solid #dee2e6;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.evidence-item {
+  margin-bottom: 1.5rem;
+}
+.evidence-item:last-child {
+  margin-bottom: 0;
+}
+.evidence-item h4 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: #495057;
+}
+.evidence-content p {
+  margin: 0;
+  color: #6c757d;
+}
+
+/* Confidence Bar */
+.confidence-bar {
+  background-color: #e9ecef;
+  border-radius: 10px;
+  height: 10px;
+  width: 100%;
+  margin: 0.5rem 0;
+}
+.confidence-fill {
+  background-color: #007bff;
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.5s ease-in-out;
+}
+.confidence-label {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+/* Sources List */
+.sources-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+.sources-list li {
+  margin-bottom: 0.5rem;
+}
+.sources-list a {
+  text-decoration: none;
+  color: #007bff;
+}
+.sources-list a:hover {
+  text-decoration: underline;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

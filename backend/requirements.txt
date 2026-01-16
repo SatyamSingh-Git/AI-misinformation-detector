@@ -1,0 +1,31 @@
+# FastAPI and Server
+fastapi
+uvicorn[standard]
+
+# Configuration and Data Validation
+pydantic
+pydantic-settings
+
+# Database (ORM)
+SQLAlchemy
+
+# HTTP client for fetching images
+requests
+
+# AI / Machine Learning Models
+torch
+transformers
+sentencepiece
+Pillow
+
+# Testing
+pytest
+httpx
+
+psycopg2-binary
+
+
+google-generativeai
+
+python-multipart
+timm

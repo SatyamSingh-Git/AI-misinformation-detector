@@ -1,0 +1,54 @@
+{
+  // General editor settings for consistency
+  "editor.formatOnSave": true, // Automatically format files when you save them
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit" // Automatically fix ESLint issues on save
+  },
+  "files.insertFinalNewline": true, // Ensure files end with a newline
+  "files.trimTrailingWhitespace": true, // Remove trailing whitespace on save
+
+  // Default formatter for frontend files
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // Python-specific settings
+  "python.formatting.provider": "black", // Use the 'black' formatter for Python
+  "python.linting.enabled": true,
+  "python.linting.flake8Enabled": true, // Use 'flake8' for linting
+  "python.linting.pylintEnabled": false, // Disable pylint in favor of flake8
+  "python.analysis.typeCheckingMode": "basic", // Basic type checking with Pylance
+
+  // Files to exclude from the explorer view for a cleaner workspace
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/__pycache__": true,
+    "**/.pytest_cache": true,
+    "**/node_modules": true,
+    "**/.venv": true,
+    "**/build": true,
+    "**/dist": true
+  }
+}

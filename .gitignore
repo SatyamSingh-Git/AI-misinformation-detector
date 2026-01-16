@@ -1,0 +1,37 @@
+# --- General ---
+.DS_Store
+*.log
+*.tmp
+
+# --- IDEs and Editors ---
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+
+# --- Python / Backend ---
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+misinformation.db # Ignore the SQLite database file
+backend/.env # Ignore backend environment variables
+
+# --- Node.js / Frontend / Extension ---
+node_modules/
+build/
+.pnp
+.pnp.js
+coverage/
+.npm
+frontend/.env # Ignore frontend environment variables
+extension/.env # Ignore extension environment variables
+
+# --- OS-specific ---
+Thumbs.db
